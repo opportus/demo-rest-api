@@ -16,4 +16,5 @@ use Symfony\Component\Validator\Constraint;
 class Price extends Constraint
 {
     public $message = 'The value "{{ value }}" is not a valid price.';
+    public $strictType = true;
 }

@@ -58,13 +58,13 @@ class ProductCollectionQuery extends CollectionConstraint
                                 new NotBlankConstraint(),
                                 new DateTimeConstraint(),
                             ]),
-                            'gtin' => new OptionalConstraint([
+                            'gtin14' => new OptionalConstraint([
                                 new NotBlankConstraint(),
                                 new GtinConstraint(['type' => 14]),
                             ]),
                             'price' => new OptionalConstraint([
                                 new NotBlankConstraint(),
-                                new PriceConstraint(),
+                                new PriceConstraint(['strictType' => false]),
                             ]),
                             'priceCurrency' => new OptionalConstraint([
                                 new NotBlankConstraint(),

@@ -29,11 +29,13 @@ class PriceValidator extends ConstraintValidator
             return;
         }
 
-        if (!\is_float($value)) {
+        if (true === $constraint->strictType && !\is_float($value)) {
             throw new UnexpectedValueException($value, 'float');
         }
 
-        if (\preg_match('/^[0-9]{1,5}.[0-9]{2}$/', (string)$value)) {
+        $value = (string)$value;
+
+        if (\preg_match('/^[0-9]{1,5}.[0-9]{2}$/', $value)) {
             return;
         }
 
