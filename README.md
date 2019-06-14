@@ -57,33 +57,32 @@ There are 2 levels of authorization:
 - To each authenticated user is granted the first level of authorization (we refer to this actor as to the *client*).
 - To each authenticated user belonging to the *BileMo* Business is granted the second level of authorization (we refer to this actor as to the *admin*).
 
-### Operations
+### Operation List
 
 All operations listed below return a response with content type `application/hal+json` **except** if the response has a `400` status code; in this case it has a content type `application/vnd+json`.
 
-| Operation                                       | Decription                                                | Actor         | Response Status Code          |
-|-------------------------------------------------|-----------------------------------------------------------|---------------|-------------------------------|
-|                                                 |                                                           |               |                               |
-| GET products                                    | Gets a list of products.                                  | Admin|Client  | `200`|`400`|`403`|`404`       |
-| GET products/{id}                               | Gets a specific product.                                  | Admin|Client  | `200`|`403`|`404`             |
-| POST products                                   | Posts a new product.                                      | Admin         | `201`|`400`|`403`|`415`       |
-| PATCH products/{id}                             | Patches a specific product.                               | Admin         | `204`|`400`|`403`|`404`|`415` |
-| DELETE products/{id}                            | Deletes a specific product.                               | Admin         | `204`|`403`|`404`             |
-|                                                 |                                                           |               |                               |
-| GET users                                       | Gets a list of users.                                     | Admin         | `200`|`400`|`403`|`404`       |
-| GET users/{id}                                  | Gets a specific user.                                     | Admin         | `200`|`403`|`404`             |
-| POST users                                      | Posts a new user.                                         | Admin         | `201`|`400`|`403`|`415`       |
-| DELETE users/{id}                               | Deletes a specific user.                                  | Admin         | `204`|`403`|`404`             |
-|                                                 |                                                           |               |                               |
-| GET businesses                                  | Gets a list of businesses.                                | Admin         | `200`|`400`|`403`|`404`       |
-| GET businesses/{id}                             | Gets a specific business.                                 | Admin|Client* | `200`|`403`|`404`             |
-| POST businesses                                 | Posts a new business.                                     | Admin         | `201`|`400`|`403`|`415`       |
-| DELETE businesses/{id}                          | Deletes a specific business.                              | Admin         | `204`|`403`|`404`             |
-|                                                 |                                                           |               |                               |
-| GET businesses/{business_id}/users              | Gets a list of users belonging to a specific business.    | Admin|Client* | `200`|`400`|`403`|`404`       |
-| GET businesses/{business_id}/users/{user_id}    | Gets a specific user belonging to a specific business.    | Admin|Client* | `200`|`403`|`404`             |
-| POST businesses/{business_id}/users             | Posts a new user belonging to a specific business.        | Admin|Client* | `201`|`400`|`403`|`415`       |
-| DELETE businesses/{business_id}/users/{user_id} | Deletes a specific user belonging to a specific business. | Admin|Client* | `204`|`403`|`404`             |
+| Operation                                       | Decription                                                | Actor         | Response Status Code              |
+|-------------------------------------------------|-----------------------------------------------------------|---------------|-----------------------------------|
+| products*                                                                                                                                                       |
+| GET products                                    | Gets a list of products.                                  | Admin\|Client  | `200`\|`400`\|`403`\|`404`       |
+| GET products/{id}                               | Gets a specific product.                                  | Admin\|Client  | `200`\|`403`\|`404`              |
+| POST products                                   | Posts a new product.                                      | Admin          | `201`\|`400`\|`403`\|`415`       |
+| PATCH products/{id}                             | Patches a specific product.                               | Admin          | `204`\|`400`\|`403`\|`404`|`415` |
+| DELETE products/{id}                            | Deletes a specific product.                               | Admin          | `204`\|`403`\|`404`              |
+| users*                                                                                                                                                          |
+| GET users                                       | Gets a list of users.                                     | Admin          | `200`\|`400`\|`403`\|`404`       |
+| GET users/{id}                                  | Gets a specific user.                                     | Admin          | `200`\|`403`\|`404`              |
+| POST users                                      | Posts a new user.                                         | Admin          | `201`\|`400`\|`403`\|`415`       |
+| DELETE users/{id}                               | Deletes a specific user.                                  | Admin          | `204`\|`403`\|`404`              |
+| businesses*                                                                                                                                                     |
+| GET businesses                                  | Gets a list of businesses.                                | Admin          | `200`\|`400`\|`403`\|`404`       |
+| GET businesses/{id}                             | Gets a specific business.                                 | Admin\|Client* | `200`\|`403`\|`404`              |
+| POST businesses                                 | Posts a new business.                                     | Admin          | `201`\|`400`\|`403`\|`415`       |
+| DELETE businesses/{id}                          | Deletes a specific business.                              | Admin          | `204`\|`403`\|`404`              |
+| GET businesses/{business_id}/users              | Gets a list of users belonging to a specific business.    | Admin\|Client* | `200`\|`400`\|`403`\|`404`       |
+| GET businesses/{business_id}/users/{user_id}    | Gets a specific user belonging to a specific business.    | Admin\|Client* | `200`\|`403`\|`404`              |
+| POST businesses/{business_id}/users             | Posts a new user belonging to a specific business.        | Admin\|Client* | `201`\|`400`\|`403`\|`415`       |
+| DELETE businesses/{business_id}/users/{user_id} | Deletes a specific user belonging to a specific business. | Admin\|Client* | `204`\|`403`\|`404`              |
 
 *Client\* can only access to his own business.*
 
