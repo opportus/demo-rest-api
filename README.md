@@ -46,35 +46,34 @@ php bin/console doctrine:fixtures:load
 
 ### Authentication
 
-Authentication is done on each request to the API and is required in order to run any operation. Authentication is done via Google OAauth 2.0. In order to get authenticated you have to send a `X-AUTH-TOKEN` request header field having as value your Google access token obtained for example via [OAuth Playground](https://developers.google.com/oauthplayground). An access token with the minimal `email` scope is all the API authentication system needs.
+Authentication is done on each request to the API and is required in order to run any operation. The API's authentication system uses Google OAuth 2.0 as authentication provider. In order to get authenticated, you have to send in your requests to the API an `X-AUTH-TOKEN` header field having as value your Google access token (obtained for example via [OAuth Playground](https://developers.google.com/oauthplayground)). An access token with the minimal `email` scope is all the API's authentication system needs.
 
-If the email of the Google account for which the access token has been generated matches the username of a registered user, you get authenticated as this user. Otherwise you get a `401` response status code.
+If the email of the Google account for which the access token has been generated matches the username of a registered user, you get authenticated as this user. Otherwise you get a `403` response status code.
 
 ### Authorization
 
 There are 2 levels of authorization:
 
-- To each authenticated user is granted the first level of authorization (we refer to this actor as to the *client*).
-- To each authenticated user belonging to the *BileMo* Business is granted the second level of authorization (we refer to this actor as to the *admin*).
+1. To each authenticated user is granted the first level of authorization allowing access to a limited set of operations.
+2. To each authenticated user belonging to the *BileMo* Business is granted the second level of authorization allowing access to the whole set of operations.
+
+We refer to the actor having the first level of authorization as to the *client* and we refer to the actor having the second level of authorization as to the *admin*.
 
 ### Operation List
 
-All operations listed below return a response with content type `application/hal+json` **except** if the response has a `400` status code; in this case it has a content type `application/vnd+json`.
+All operations listed below return a response with `application/hal+json` content type **except** if the response has a `400` status code; in this case the response has an `application/vnd+json` content type.
 
-| Operation                                       | Decription                                                | Actor         | Response Status Code              |
-|-------------------------------------------------|-----------------------------------------------------------|---------------|-----------------------------------|
-| products*                                                                                                                                                       |
+| Operation                                       | Decription                                                | Actor          | Response Status Code             |
+|-------------------------------------------------|-----------------------------------------------------------|----------------|----------------------------------|
 | GET products                                    | Gets a list of products.                                  | Admin\|Client  | `200`\|`400`\|`403`\|`404`       |
 | GET products/{id}                               | Gets a specific product.                                  | Admin\|Client  | `200`\|`403`\|`404`              |
 | POST products                                   | Posts a new product.                                      | Admin          | `201`\|`400`\|`403`\|`415`       |
 | PATCH products/{id}                             | Patches a specific product.                               | Admin          | `204`\|`400`\|`403`\|`404`|`415` |
 | DELETE products/{id}                            | Deletes a specific product.                               | Admin          | `204`\|`403`\|`404`              |
-| users*                                                                                                                                                          |
 | GET users                                       | Gets a list of users.                                     | Admin          | `200`\|`400`\|`403`\|`404`       |
 | GET users/{id}                                  | Gets a specific user.                                     | Admin          | `200`\|`403`\|`404`              |
 | POST users                                      | Posts a new user.                                         | Admin          | `201`\|`400`\|`403`\|`415`       |
 | DELETE users/{id}                               | Deletes a specific user.                                  | Admin          | `204`\|`403`\|`404`              |
-| businesses*                                                                                                                                                     |
 | GET businesses                                  | Gets a list of businesses.                                | Admin          | `200`\|`400`\|`403`\|`404`       |
 | GET businesses/{id}                             | Gets a specific business.                                 | Admin\|Client* | `200`\|`403`\|`404`              |
 | POST businesses                                 | Posts a new business.                                     | Admin          | `201`\|`400`\|`403`\|`415`       |
@@ -88,7 +87,7 @@ All operations listed below return a response with content type `application/hal
 
 ### Request Body Models
 
-The server expects requests body to be formated in JSON, otherwise it returns a `415` response.
+The system expects requests body to be formated in JSON, otherwise it returns a `415` response.
 
 `POST products` request body model ([`ProductPostRequestBodyModel`](https://github.com/opportus/demo-rest-api/blob/master/src/HttpMessageBodyModel/ProductPostRequestBodyModel.php)):
 
@@ -150,8 +149,10 @@ The server expects requests body to be formated in JSON, otherwise it returns a 
 
 ### Request Query Models
 
-- `GET products` query is constrained by: [`Constraints\ProductCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/ProductCollectionQuery.php)
-- `GET users` query is constrained by: [`Constraints\UserCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/UserCollectionQuery.php)
-- `GET businesses` query is constrained by: [`Constraints\BusinessCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/BusinessCollectionQuery.php)
-- `GET businesses/{business_id}/users` query is constrained by: [`Constraints\BusinessUserCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/BusinessUser
-CollectionQuery.php)
+The `GET products` query model is constrained by: [`Constraints\ProductCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/ProductCollectionQuery.php)
+
+The `GET users` query model is constrained by: [`Constraints\UserCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/UserCollectionQuery.php)
+
+The `GET businesses` query model is constrained by: [`Constraints\BusinessCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/BusinessCollectionQuery.php)
+
+The `GET businesses/{business_id}/users` query model is constrained by: [`Constraints\BusinessUserCollectionQuery`](https://github.com/opportus/demo-rest-api/blob/master/src/Validator/Constraints/BusinessUserCollectionQuery.php)
