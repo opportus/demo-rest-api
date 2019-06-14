@@ -1,5 +1,15 @@
 Demo Symfony 4 REST API using HAL as hypermedia format standard.
 
+## Index
+
+- [Installation](#installation)
+- [API Documentation](#api-documentation)
+  - [Authentication](#authentication)
+  - [Authorization](#authorization)
+  - [Operation List](#operation-list)
+  - [Request Body Models](#request-body-models)
+  - [Request Query Models](#request-query-models)
+
 ## Installation
 
 ### Step 1 - Clone And Compose The Application
