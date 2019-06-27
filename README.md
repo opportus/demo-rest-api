@@ -1,3 +1,5 @@
+[![SymfonyInsight](https://insight.symfony.com/projects/0b9da09b-54fc-4004-8110-dc0df94c1029/mini.svg)](https://insight.symfony.com/projects/0b9da09b-54fc-4004-8110-dc0df94c1029)
+
 Demo Symfony 4 REST API using HAL as hypermedia format standard.
 
 ## Index
