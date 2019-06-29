@@ -12,7 +12,6 @@
 ###< symfony/web-server-bundle ###
 
 ###> app ###
-/.env
 /symfony.lock
 /composer.lock
 ###< app ###
