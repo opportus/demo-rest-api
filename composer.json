@@ -12,6 +12,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^1.1",
         "doctrine/orm": "^2.6",
+        "fabpot/goutte": "^3.2",
         "opportus/extended-framework-bundle": "dev-master",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/console": "^4.2",

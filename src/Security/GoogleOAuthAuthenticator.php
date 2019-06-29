@@ -3,12 +3,16 @@
 namespace App\Security;
 
 use App\Exception\AuthenticationGoogleOAuthException;
+use Goutte\Client as HttpClient;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Handler\StreamHandler as GuzzleStreamHandler;
+use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -49,17 +53,21 @@ class GoogleOAuthAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $ch = \curl_init();
+        $guzzleConfig['handler'] = GuzzleHandlerStack::create(new GuzzleStreamHandler());
 
-        \curl_setopt($ch, \CURLOPT_URL, \sprintf('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s', $credentials));
-        \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true);
-        \curl_setopt($ch, \CURLOPT_SSL_VERIFYHOST, false); // Must not be there in prod...
-        \curl_setopt($ch, \CURLOPT_SSL_VERIFYPEER, false); // Must not be there in prod...
+        if ('dev' === $_SERVER['APP_ENV']) {
+            $guzzleConfig['verify'] = false;
+        }
 
-        $responseBody = \json_decode(\curl_exec($ch), true);
-        $responseCode = \curl_getinfo($ch, \CURLINFO_HTTP_CODE);
+        $guzzleClient = new GuzzleClient($guzzleConfig);
 
-        \curl_close($ch);
+        $httpClient = new HttpClient();
+        $httpClient->setClient($guzzleClient);
+        $httpClient->request('GET', \sprintf('https://www.googleapis.com/oauth2/v1/userinfo?access_token=%s', $credentials));
+        $response = $httpClient->getResponse();
+
+        $responseBody = \json_decode($response->getContent(), true);
+        $responseCode = $response->getStatusCode();
 
         if (false == $responseBody || (200 !== $responseCode && !isset($responseBody['error'])) || (200 === $responseCode && !isset($responseBody['email']))) {
             throw new AuthenticationServiceException('Authentication request could not be processed due to a system problem.');
