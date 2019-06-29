@@ -10,6 +10,7 @@ use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -28,6 +29,21 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  */
 class GoogleOAuthAuthenticator extends AbstractGuardAuthenticator
 {
+    /**
+     * @var KernelInterface $kernel
+     */
+    private $kernel;
+
+    /**
+     * Constructs the Google OAuth authenticator.
+     *
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -55,7 +71,7 @@ class GoogleOAuthAuthenticator extends AbstractGuardAuthenticator
     {
         $guzzleConfig['handler'] = GuzzleHandlerStack::create(new GuzzleStreamHandler());
 
-        if ('dev' === $_SERVER['APP_ENV']) {
+        if ('dev' === $this->kernel->getEnvironment()) {
             $guzzleConfig['verify'] = false;
         }
 
@@ -69,7 +85,7 @@ class GoogleOAuthAuthenticator extends AbstractGuardAuthenticator
         $responseBody = \json_decode($response->getContent(), true);
         $responseCode = $response->getStatusCode();
 
-        if (false == $responseBody || (200 !== $responseCode && !isset($responseBody['error'])) || (200 === $responseCode && !isset($responseBody['email']))) {
+        if (false === $responseBody || null === $responseBody || (200 !== $responseCode && !isset($responseBody['error'])) || (200 === $responseCode && !isset($responseBody['email']))) {
             throw new AuthenticationServiceException('Authentication request could not be processed due to a system problem.');
         }
 

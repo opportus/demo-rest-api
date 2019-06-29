@@ -5,14 +5,14 @@ namespace App\Generator\Strategy;
 use App\HttpMessageBodyModel\VndErrorResponseBodyModel;
 use Hateoas\Representation\CollectionRepresentation;
 use JMS\Serializer\SerializerInterface;
-use Opportus\ExtendedFrameworkBundle\Generator\Configuration\AbstractViewConfiguration;
-use Opportus\ExtendedFrameworkBundle\Generator\Configuration\SerializedData as SerializedDataConfiguration;
-use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerResultInterface;
-use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerException;
-use Opportus\ExtendedFrameworkBundle\Generator\GeneratorException;
-use Opportus\ExtendedFrameworkBundle\Generator\Strategy\ViewStrategyInterface;
 use Opportus\ExtendedFrameworkBundle\DataFetcher\DataFetcherInterface;
 use Opportus\ExtendedFrameworkBundle\EntityGateway\Query\QueryResult;
+use Opportus\ExtendedFrameworkBundle\Generator\Configuration\AbstractViewConfiguration;
+use Opportus\ExtendedFrameworkBundle\Generator\Configuration\SerializedData as SerializedDataConfiguration;
+use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerException;
+use Opportus\ExtendedFrameworkBundle\Generator\Context\ControllerResultInterface;
+use Opportus\ExtendedFrameworkBundle\Generator\GeneratorException;
+use Opportus\ExtendedFrameworkBundle\Generator\Strategy\ViewStrategyInterface;
 use Opportus\ObjectMapper\ObjectMapperInterface;
 use StdClass;
 use Symfony\Component\HttpFoundation\Request;
@@ -123,12 +123,6 @@ final class HalSerializedDataStrategy implements ViewStrategyInterface
         }
 
         return 'application/hal+json' === $viewConfiguration->getFormat() || 'application/hal+xml' === $viewConfiguration->getFormat();
-
-        if (self::class !== $viewConfiguration->getStrategyFqcn()) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

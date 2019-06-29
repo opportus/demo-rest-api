@@ -1,4 +1,4 @@
-[![SymfonyInsight](https://insight.symfony.com/projects/0b9da09b-54fc-4004-8110-dc0df94c1029/mini.svg)](https://insight.symfony.com/projects/0b9da09b-54fc-4004-8110-dc0df94c1029)
+[![SymfonyInsight](https://insight.symfony.com/projects/45b10e74-2818-43da-9b65-46e74c414111/mini.svg)](https://insight.symfony.com/projects/45b10e74-2818-43da-9b65-46e74c414111)
 
 Demo Symfony 4 REST API using HAL as hypermedia format standard.
 
